@@ -1,6 +1,6 @@
 
 import streamlit as st
-from fpdf import FPDF
+from fpdf import FPDF 
 
 # =====================================================
 # PROJECT: AI VIRTUAL CAREER COUNSELLOR
@@ -505,6 +505,7 @@ if st.button("🔍 Find My Career", use_container_width=True):
             "result": career_data[subject][interest]
         }
 
+        st.rerun()
 # =====================================================
 # DISPLAY CAREER REPORT
 # =====================================================
