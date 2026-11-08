@@ -544,16 +544,7 @@ if "report" in st.session_state:
         st.write(f"**Step {index}:** {step}")
 
     st.divider()
-    st.markdown(
-    """
-    <script>
-    window.parent.document.querySelector(
-        '[data-testid="stAppViewContainer"]'
-    ).scrollTo({top: 0, behavior: 'smooth'});
-    </script>
-    """,
-    unsafe_allow_html=True
-)
+    
 
     st.subheader("📄 Download Your Report")
 
