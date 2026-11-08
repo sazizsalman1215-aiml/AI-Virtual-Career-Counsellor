@@ -443,21 +443,21 @@ def create_pdf(name, subject, interest, result):
     # Return PDF as bytes
     return bytes(pdf.output())
 
+
 # =====================================================
 # STREAMLIT USER INTERFACE & FLOW LOGIC
 # =====================================================
 
-st.title("🎓 AI Virtual Career Counsellor")
-st.write("Discover career options based on your favourite subject and personal interests.")
-st.divider()
-
 if "report" not in st.session_state:
     st.session_state["report"] = None
 
-# 1. Agar report nahi bani hai, toh input form dikhao
+# Agar report nahi bani hai, toh sirf FORM dikhao
 if st.session_state["report"] is None:
+    st.title("🎓 AI Virtual Career Counsellor")
+    st.write("Discover career options based on your favourite subject and personal interests.")
+    st.divider()
 
-    with st.form("career_form"):
+    with st.form("career_form_unique_id"):
         st.subheader("Enter Your Details")
 
         name = st.text_input("Enter Your Name", placeholder="Enter your full name")
@@ -493,10 +493,10 @@ if st.session_state["report"] is None:
                 }
                 st.rerun()
 
-# 2. Agar report ban chuki hai, toh report dikhao (Back button sabse upar rahega)
+# Agar report ban chuki hai, toh FORM gayab ho jayega aur sirf REPORT dikhegi
 else:
-    # Sabse upar Back button taaki aapko scroll na karna pade
-    if st.button("⬅️ Go Back & Edit Details", use_container_width=True):
+    # Sabse upar Back button
+    if st.button("⬅️ Back to Form", use_container_width=True):
         st.session_state["report"] = None
         st.rerun()
 
@@ -543,6 +543,7 @@ else:
         data=pdf_data,
         file_name="Career_Report.pdf",
         mime="application/pdf",
+        key="unique_pdf_download_button", # Duplicate ID error fix karne ke liye key di hai
         use_container_width=True
     )
 
