@@ -505,7 +505,7 @@ if st.button("🔍 Find My Career", use_container_width=True):
             "result": career_data[subject][interest]
         }
 
-        st.rerun()
+    
 # =====================================================
 # DISPLAY CAREER REPORT
 # =====================================================
