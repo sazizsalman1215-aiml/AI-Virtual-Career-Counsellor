@@ -1,0 +1,554 @@
+
+import streamlit as st
+from fpdf import FPDF
+
+# =====================================================
+# PROJECT: AI VIRTUAL CAREER COUNSELLOR
+# DOMAIN: ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING
+# =====================================================
+
+st.set_page_config(
+    page_title="AI Virtual Career Counsellor",
+    page_icon="🎓",
+    layout="centered"
+)
+
+# =====================================================
+# CAREER DATABASE
+# =====================================================
+
+career_data = {
+
+    "Mathematics": {
+        "Numbers, Statistics and Data": {
+            "careers": [
+                "Data Analyst",
+                "Statistician",
+                "Data Scientist"
+            ],
+            "skills": "Mathematics, Statistics, Python, Data Analysis",
+            "roadmap": [
+                "Learn basic Mathematics and Statistics.",
+                "Learn Python programming.",
+                "Practice data analysis using real datasets.",
+                "Build data analysis projects and create a portfolio."
+            ]
+        },
+
+        "Finance and Money": {
+            "careers": [
+                "Financial Analyst",
+                "Accountant",
+                "Investment Analyst"
+            ],
+            "skills": "Mathematics, Accounting, Financial Analysis, Excel",
+            "roadmap": [
+                "Learn basic financial concepts.",
+                "Study Accounting and Economics.",
+                "Learn Excel and financial analysis.",
+                "Practice with financial projects."
+            ]
+        },
+
+        "Engineering and Technology": {
+            "careers": [
+                "Civil Engineer",
+                "Mechanical Engineer",
+                "Electrical Engineer"
+            ],
+            "skills": "Mathematics, Physics, Problem Solving, Engineering",
+            "roadmap": [
+                "Build strong Mathematics and Physics knowledge.",
+                "Learn engineering fundamentals.",
+                "Practice technical tools and software.",
+                "Work on engineering projects."
+            ]
+        },
+
+        "Teaching and Research": {
+            "careers": [
+                "Mathematics Teacher",
+                "Research Scientist",
+                "Mathematics Professor"
+            ],
+            "skills": "Mathematics, Communication, Research, Problem Solving",
+            "roadmap": [
+                "Develop strong mathematical knowledge.",
+                "Improve communication and teaching skills.",
+                "Study advanced Mathematics.",
+                "Participate in research and teaching activities."
+            ]
+        }
+    },
+
+    "Computer Science": {
+        "AI and Machine Learning": {
+            "careers": [
+                "AI Engineer",
+                "Machine Learning Engineer",
+                "Data Scientist"
+            ],
+            "skills": "Python, Mathematics, Machine Learning, Data Analysis",
+            "roadmap": [
+                "Learn Python programming.",
+                "Study Mathematics and Statistics.",
+                "Learn Machine Learning fundamentals.",
+                "Build AI and Machine Learning projects."
+            ]
+        },
+
+        "Software and Programming": {
+            "careers": [
+                "Software Developer",
+                "Web Developer",
+                "Application Developer"
+            ],
+            "skills": "Python, Java, HTML, CSS, Problem Solving",
+            "roadmap": [
+                "Learn a programming language.",
+                "Practice Data Structures and Algorithms.",
+                "Learn web or application development.",
+                "Build and publish software projects."
+            ]
+        },
+
+        "Cybersecurity and Networks": {
+            "careers": [
+                "Cybersecurity Analyst",
+                "Network Engineer",
+                "Security Consultant"
+            ],
+            "skills": "Computer Networks, Linux, Security Concepts, Problem Solving",
+            "roadmap": [
+                "Learn computer fundamentals.",
+                "Study networking and operating systems.",
+                "Learn cybersecurity concepts in legal practice environments.",
+                "Build security knowledge through safe projects and certifications."
+            ]
+        },
+
+        "Hardware and Robotics": {
+            "careers": [
+                "Robotics Engineer",
+                "Embedded Systems Engineer",
+                "Hardware Engineer"
+            ],
+            "skills": "Electronics, Programming, Robotics, Microcontrollers",
+            "roadmap": [
+                "Learn basic electronics.",
+                "Study programming and microcontrollers.",
+                "Understand sensors and robotics concepts.",
+                "Build safe robotics and hardware projects."
+            ]
+        }
+    },
+
+    "Biology": {
+        "Patient Care and Healthcare": {
+            "careers": [
+                "Doctor",
+                "Nurse",
+                "Physiotherapist"
+            ],
+            "skills": "Biology, Communication, Patient Care, Medical Knowledge",
+            "roadmap": [
+                "Study Biology and Human Anatomy.",
+                "Understand healthcare and medical subjects.",
+                "Complete the required professional education.",
+                "Gain supervised practical experience."
+            ]
+        },
+
+        "Laboratory and Research": {
+            "careers": [
+                "Microbiologist",
+                "Biochemist",
+                "Research Scientist"
+            ],
+            "skills": "Biology, Chemistry, Laboratory Skills, Research",
+            "roadmap": [
+                "Learn Biology and Chemistry fundamentals.",
+                "Study Microbiology and Biochemistry.",
+                "Learn laboratory techniques under supervision.",
+                "Participate in research projects."
+            ]
+        },
+
+        "Medicines and Pharmacy": {
+            "careers": [
+                "Pharmacist",
+                "Clinical Research Associate",
+                "Pharmaceutical Scientist"
+            ],
+            "skills": "Chemistry, Biology, Pharmaceutical Knowledge, Research",
+            "roadmap": [
+                "Study Biology and Chemistry.",
+                "Learn about medicines and pharmaceutical science.",
+                "Complete the required pharmacy or related degree.",
+                "Gain professional training and experience."
+            ]
+        },
+
+        "Plants and Animals": {
+            "careers": [
+                "Botanist",
+                "Zoologist",
+                "Wildlife Biologist"
+            ],
+            "skills": "Biology, Environmental Science, Observation, Research",
+            "roadmap": [
+                "Learn plant and animal biology.",
+                "Study Botany or Zoology.",
+                "Participate in supervised field studies.",
+                "Work on biodiversity and conservation projects."
+            ]
+        },
+
+        "Environment and Nature": {
+            "careers": [
+                "Environmental Scientist",
+                "Ecologist",
+                "Conservation Scientist"
+            ],
+            "skills": "Environmental Science, Biology, Research, Data Analysis",
+            "roadmap": [
+                "Learn environmental science basics.",
+                "Study ecosystems and biodiversity.",
+                "Participate in environmental projects.",
+                "Develop skills in conservation and research."
+            ]
+        }
+    },
+
+    "Arts and Design": {
+        "Drawing and Visual Design": {
+            "careers": [
+                "Graphic Designer",
+                "Illustrator",
+                "UI Designer"
+            ],
+            "skills": "Creativity, Drawing, Design Tools, Visual Communication",
+            "roadmap": [
+                "Practice drawing and creative thinking.",
+                "Learn graphic design fundamentals.",
+                "Practice using design software.",
+                "Create a design portfolio."
+            ]
+        },
+
+        "Writing and Communication": {
+            "careers": [
+                "Content Writer",
+                "Journalist",
+                "Copywriter"
+            ],
+            "skills": "Writing, Communication, Creativity, Research",
+            "roadmap": [
+                "Improve reading and writing skills.",
+                "Practice different writing styles.",
+                "Learn research and editing.",
+                "Create a writing portfolio."
+            ]
+        },
+
+        "Film and Entertainment": {
+            "careers": [
+                "Film Director",
+                "Video Editor",
+                "Animator"
+            ],
+            "skills": "Creativity, Storytelling, Editing, Visual Design",
+            "roadmap": [
+                "Learn storytelling and creative concepts.",
+                "Understand filmmaking basics.",
+                "Practice video editing and animation.",
+                "Create short films or animation projects."
+            ]
+        },
+
+        "Fashion and Creativity": {
+            "careers": [
+                "Fashion Designer",
+                "Fashion Illustrator",
+                "Fashion Stylist"
+            ],
+            "skills": "Creativity, Drawing, Design, Fashion Knowledge",
+            "roadmap": [
+                "Learn fashion and design fundamentals.",
+                "Practice sketching and illustration.",
+                "Study fabrics, colours and patterns.",
+                "Create a fashion design portfolio."
+            ]
+        }
+    },
+
+    "Business": {
+        "Finance and Accounting": {
+            "careers": [
+                "Accountant",
+                "Financial Analyst",
+                "Auditor"
+            ],
+            "skills": "Accounting, Mathematics, Excel, Financial Knowledge",
+            "roadmap": [
+                "Learn basic accounting concepts.",
+                "Study finance and taxation.",
+                "Practice Excel and accounting software.",
+                "Gain practical experience through projects."
+            ]
+        },
+
+        "Marketing and Sales": {
+            "careers": [
+                "Marketing Manager",
+                "Digital Marketing Specialist",
+                "Sales Executive"
+            ],
+            "skills": "Communication, Marketing, Creativity, Market Research",
+            "roadmap": [
+                "Learn marketing fundamentals.",
+                "Study digital marketing concepts.",
+                "Practice content creation and market research.",
+                "Work on marketing projects."
+            ]
+        },
+
+        "Management and Leadership": {
+            "careers": [
+                "Business Manager",
+                "Project Manager",
+                "Human Resource Manager"
+            ],
+            "skills": "Leadership, Communication, Planning, Teamwork",
+            "roadmap": [
+                "Learn business management basics.",
+                "Improve communication and teamwork.",
+                "Practice planning and decision-making.",
+                "Develop leadership experience through projects."
+            ]
+        },
+
+        "Starting a Business": {
+            "careers": [
+                "Entrepreneur",
+                "Startup Founder",
+                "Business Consultant"
+            ],
+            "skills": "Business Planning, Creativity, Communication, Finance",
+            "roadmap": [
+                "Learn basic business concepts.",
+                "Identify problems and business opportunities.",
+                "Prepare a simple business plan.",
+                "Develop and test a small business idea."
+            ]
+        },
+
+        "Economics and Analysis": {
+            "careers": [
+                "Economist",
+                "Business Analyst",
+                "Market Research Analyst"
+            ],
+            "skills": "Economics, Mathematics, Statistics, Analytical Thinking",
+            "roadmap": [
+                "Learn basic Economics.",
+                "Study Statistics and Mathematics.",
+                "Practice analysing economic information.",
+                "Build research and analysis projects."
+            ]
+        }
+    }
+}
+
+
+# =====================================================
+# PDF REPORT GENERATION
+# =====================================================
+
+def create_pdf(name, subject, interest, result):
+
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    # Use built-in font with safe Latin-1 text
+    pdf.set_font("Arial", "B", 18)
+    pdf.cell(0, 12, "AI VIRTUAL CAREER COUNSELLOR", ln=True, align="C")
+
+    pdf.ln(8)
+
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "Career Recommendation Report", ln=True)
+
+    pdf.ln(5)
+
+    pdf.set_font("Arial", "", 11)
+
+    safe_name = name.encode("latin-1", "replace").decode("latin-1")
+
+    pdf.cell(0, 8, f"Student Name: {safe_name}", ln=True)
+    pdf.cell(0, 8, f"Subject: {subject}", ln=True)
+    pdf.multi_cell(0, 8, f"Interest: {interest}")
+
+    pdf.ln(5)
+
+    pdf.set_font("Arial", "B", 12)
+    pdf.cell(0, 9, "Recommended Careers:", ln=True)
+
+    pdf.set_font("Arial", "", 11)
+
+    for career in result["careers"]:
+        pdf.multi_cell(0, 8, "- " + career)
+
+    pdf.ln(3)
+
+    pdf.set_font("Arial", "B", 12)
+    pdf.cell(0, 9, "Required Skills:", ln=True)
+
+    pdf.set_font("Arial", "", 11)
+    pdf.multi_cell(0, 8, result["skills"])
+
+    pdf.ln(3)
+
+    pdf.set_font("Arial", "B", 12)
+    pdf.cell(0, 9, "Career Roadmap:", ln=True)
+
+    pdf.set_font("Arial", "", 11)
+
+    for index, step in enumerate(result["roadmap"], 1):
+        pdf.multi_cell(0, 8, f"{index}. {step}")
+
+    pdf.ln(5)
+
+    pdf.set_font("Arial", "I", 9)
+    pdf.multi_cell(
+        0,
+        7,
+        "Note: These are general career suggestions. "
+        "Choose a career after considering your interests, "
+        "education, abilities and professional guidance."
+    )
+
+    return bytes(pdf.output())
+
+
+# =====================================================
+# STREAMLIT USER INTERFACE
+# =====================================================
+
+st.title("🎓 AI Virtual Career Counsellor")
+
+st.write(
+    "Discover career options based on your favourite subject "
+    "and personal interests."
+)
+
+st.divider()
+
+st.subheader("Enter Your Details")
+
+name = st.text_input(
+    "Enter Your Name",
+    placeholder="Enter your full name"
+)
+
+subject = st.selectbox(
+    "Select Your Favourite Subject",
+    ["Select Subject"] + list(career_data.keys())
+)
+
+if subject != "Select Subject":
+
+    interest_options = list(career_data[subject].keys())
+
+    interest = st.selectbox(
+        "Select Your Area of Interest",
+        ["Select Interest"] + interest_options
+    )
+
+else:
+    interest = "Select Interest"
+
+st.divider()
+
+if st.button("🔍 Find My Career", use_container_width=True):
+
+    if not name.strip():
+        st.warning("Please enter your name.")
+
+    elif subject == "Select Subject":
+        st.warning("Please select your favourite subject.")
+
+    elif interest == "Select Interest":
+        st.warning("Please select your area of interest.")
+
+    else:
+        st.session_state["report"] = {
+            "name": name.strip(),
+            "subject": subject,
+            "interest": interest,
+            "result": career_data[subject][interest]
+        }
+
+# =====================================================
+# DISPLAY CAREER REPORT
+# =====================================================
+
+if "report" in st.session_state:
+
+    report = st.session_state["report"]
+
+    st.success("Your Career Report Is Ready!")
+
+    st.header("Hello, " + report["name"] + "!")
+
+    st.subheader("Your Selected Details")
+
+    st.write("**Subject:**", report["subject"])
+    st.write("**Interest:**", report["interest"])
+
+    st.divider()
+
+    st.subheader("🌟 Recommended Careers")
+
+    for index, career in enumerate(report["result"]["careers"], 1):
+        st.write(f"{index}. **{career}**")
+
+    st.divider()
+
+    st.subheader("💡 Required Skills")
+
+    st.write(report["result"]["skills"])
+
+    st.divider()
+
+    st.subheader("🗺️ Your Career Roadmap")
+
+    for index, step in enumerate(report["result"]["roadmap"], 1):
+        st.write(f"**Step {index}:** {step}")
+
+    st.divider()
+
+    st.subheader("📄 Download Your Report")
+
+    pdf_data = create_pdf(
+        report["name"],
+        report["subject"],
+        report["interest"],
+        report["result"]
+    )
+
+    st.download_button(
+        label="⬇️ Download Career Report (PDF)",
+        data=pdf_data,
+        file_name="Career_Report.pdf",
+        mime="application/pdf",
+        use_container_width=True
+    )
+
+st.divider()
+
+st.caption(
+    "AI Virtual Career Counsellor | AIML Project | "
+    "Career suggestions are based on a predefined career database."
+)
