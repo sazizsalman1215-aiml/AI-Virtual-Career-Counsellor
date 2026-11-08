@@ -569,3 +569,6 @@ st.caption(
     "AI Virtual Career Counsellor | AIML Project | "
     "Career suggestions are based on a predefined career database."
 )
+
+
+
