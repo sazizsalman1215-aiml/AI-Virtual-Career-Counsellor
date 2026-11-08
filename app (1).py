@@ -398,7 +398,8 @@ def create_pdf(name, subject, interest, result):
     pdf.set_font("Arial", "", 11)
 
     for career in result["careers"]:
-        pdf.multi_cell(0, 8, "- " + career)
+        pdf.set_x(10)
+    pdf.multi_cell(190, 8, "- " + career)
 
     pdf.ln(3)
 
