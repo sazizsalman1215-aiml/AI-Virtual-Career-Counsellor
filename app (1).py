@@ -304,51 +304,56 @@ if "report" not in st.session_state or not isinstance(st.session_state["report"]
     st.session_state["report"] = None
 
 # =====================================================
-# UI FLOW: FORM vs REPORT SCREEN
+# UI FLOW: INPUT FORM VS REPORT SCREEN
 # =====================================================
 if st.session_state["report"] is None:
     st.title("🎓 AI Virtual Career Counsellor")
     st.write("Discover career options based on your favourite subject and personal interests.")
     st.divider()
 
-    with st.form("career_input_form"):
-        st.subheader("Enter Your Details")
+    st.subheader("Enter Your Details")
 
-        name = st.text_input("Enter Your Name", placeholder="Enter your full name")
+    name = st.text_input("Enter Your Name", placeholder="Enter your full name")
 
-        subject = st.selectbox(
-            "Select Your Favourite Subject",
-            ["Select Subject"] + list(career_data.keys())
-        )
+    # Subject selection (Instant update without st.form)
+    subject = st.selectbox(
+        "Select Your Favourite Subject",
+        ["Select Subject"] + list(career_data.keys())
+    )
 
-        if subject != "Select Subject" and subject in career_data:
-            interest_options = ["Select Interest"] + list(career_data[subject].keys())
+    # Dynamic Interest Options updating instantly
+    if subject != "Select Subject" and subject in career_data:
+        interest_options = ["Select Interest"] + list(career_data[subject].keys())
+    else:
+        interest_options = ["Select Interest"]
+
+    interest = st.selectbox(
+        "Select Your Area of Interest",
+        interest_options
+    )
+
+    st.divider()
+    
+    submit_button = st.button("🔍 Find My Career", use_container_width=True)
+
+    if submit_button:
+        if not name.strip():
+            st.warning("Please enter your name.")
+        elif subject == "Select Subject":
+            st.warning("Please select your favourite subject.")
+        elif interest == "Select Interest":
+            st.warning("Please select your area of interest.")
         else:
-            interest_options = ["Select Interest"]
-
-        interest = st.selectbox("Select Your Area of Interest", interest_options)
-
-        st.divider()
-        submit_button = st.form_submit_button("🔍 Find My Career", use_container_width=True)
-
-        if submit_button:
-            if not name.strip():
-                st.warning("Please enter your name.")
-            elif subject == "Select Subject":
-                st.warning("Please select your favourite subject.")
-            elif interest == "Select Interest":
-                st.warning("Please select your area of interest.")
-            else:
-                st.session_state["report"] = {
-                    "name": name.strip(),
-                    "subject": subject,
-                    "interest": interest,
-                    "result": career_data[subject][interest]
-                }
-                st.rerun()
+            st.session_state["report"] = {
+                "name": name.strip(),
+                "subject": subject,
+                "interest": interest,
+                "result": career_data[subject][interest]
+            }
+            st.rerun()
 
 else:
-    # Back button at the top of the report
+    # Back button at the top of the report screen
     if st.button("⬅️ Back to Form", use_container_width=True):
         st.session_state["report"] = None
         st.rerun()
