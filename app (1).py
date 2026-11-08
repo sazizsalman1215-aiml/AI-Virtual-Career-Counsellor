@@ -371,40 +371,53 @@ def create_pdf(name, subject, interest, result):
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    # Use built-in font with safe Latin-1 text
     pdf.set_font("Arial", "B", 18)
-    pdf.cell(0, 12, "AI VIRTUAL CAREER COUNSELLOR", ln=True, align="C")
+    pdf.cell(
+        0, 12,
+        "AI VIRTUAL CAREER COUNSELLOR",
+        new_x="LMARGIN",
+        new_y="NEXT",
+        align="C"
+    )
 
     pdf.ln(8)
 
     pdf.set_font("Arial", "B", 14)
-    pdf.cell(0, 10, "Career Recommendation Report", ln=True)
+    pdf.cell(
+        0, 10,
+        "Career Recommendation Report",
+        new_x="LMARGIN",
+        new_y="NEXT"
+    )
 
     pdf.ln(5)
-
     pdf.set_font("Arial", "", 11)
 
     safe_name = name.encode("latin-1", "replace").decode("latin-1")
 
-    pdf.cell(0, 8, f"Student Name: {safe_name}", ln=True)
-    pdf.cell(0, 8, f"Subject: {subject}", ln=True)
+    pdf.cell(0, 8, f"Student Name: {safe_name}", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 8, f"Subject: {subject}", new_x="LMARGIN", new_y="NEXT")
     pdf.multi_cell(0, 8, f"Interest: {interest}")
 
     pdf.ln(5)
 
     pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Recommended Careers:", ln=True)
+    pdf.cell(0, 9, "Recommended Careers:", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font("Arial", "", 11)
 
     for career in result["careers"]:
-        pdf.set_x(10)
-    pdf.multi_cell(190, 8, "- " + career)
+        pdf.cell(
+            0, 8,
+            "- " + career,
+            new_x="LMARGIN",
+            new_y="NEXT"
+        )
 
     pdf.ln(3)
 
     pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Required Skills:", ln=True)
+    pdf.cell(0, 9, "Required Skills:", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font("Arial", "", 11)
     pdf.multi_cell(0, 8, result["skills"])
@@ -412,7 +425,7 @@ def create_pdf(name, subject, interest, result):
     pdf.ln(3)
 
     pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Career Roadmap:", ln=True)
+    pdf.cell(0, 9, "Career Roadmap:", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font("Arial", "", 11)
 
@@ -423,8 +436,7 @@ def create_pdf(name, subject, interest, result):
 
     pdf.set_font("Arial", "I", 9)
     pdf.multi_cell(
-        0,
-        7,
+        0, 7,
         "Note: These are general career suggestions. "
         "Choose a career after considering your interests, "
         "education, abilities and professional guidance."
@@ -432,7 +444,7 @@ def create_pdf(name, subject, interest, result):
 
     return bytes(pdf.output())
 
-
+    
 # =====================================================
 # STREAMLIT USER INTERFACE
 # =====================================================
