@@ -443,66 +443,114 @@ def create_pdf(name, subject, interest, result):
     # Return PDF as bytes
     return bytes(pdf.output())
 
-
-
-    
 # =====================================================
-# STREAMLIT USER INTERFACE
+# STREAMLIT USER INTERFACE & FLOW LOGIC
 # =====================================================
 
 st.title("🎓 AI Virtual Career Counsellor")
-
-st.write(
-    "Discover career options based on your favourite subject "
-    "and personal interests."
-)
-
+st.write("Discover career options based on your favourite subject and personal interests.")
 st.divider()
 
-st.subheader("Enter Your Details")
+if "report" not in st.session_state:
+    st.session_state["report"] = None
 
-name = st.text_input(
-    "Enter Your Name",
-    placeholder="Enter your full name"
-)
+# 1. Agar report nahi bani hai, toh input form dikhao
+if st.session_state["report"] is None:
 
-subject = st.selectbox(
-    "Select Your Favourite Subject",
-    ["Select Subject"] + list(career_data.keys())
-)
+    with st.form("career_form"):
+        st.subheader("Enter Your Details")
 
-if subject != "Select Subject":
+        name = st.text_input("Enter Your Name", placeholder="Enter your full name")
 
-    interest_options = list(career_data[subject].keys())
+        subject = st.selectbox(
+            "Select Your Favourite Subject",
+            ["Select Subject"] + list(career_data.keys())
+        )
 
-    interest = st.selectbox(
-        "Select Your Area of Interest",
-        ["Select Interest"] + interest_options
+        if subject != "Select Subject" and subject in career_data:
+            interest_options = ["Select Interest"] + list(career_data[subject].keys())
+        else:
+            interest_options = ["Select Interest"]
+
+        interest = st.selectbox("Select Your Area of Interest", interest_options)
+
+        st.divider()
+        submit_button = st.form_submit_button("🔍 Find My Career", use_container_width=True)
+
+        if submit_button:
+            if not name.strip():
+                st.warning("Please enter your name.")
+            elif subject == "Select Subject":
+                st.warning("Please select your favourite subject.")
+            elif interest == "Select Interest":
+                st.warning("Please select your area of interest.")
+            else:
+                st.session_state["report"] = {
+                    "name": name.strip(),
+                    "subject": subject,
+                    "interest": interest,
+                    "result": career_data[subject][interest]
+                }
+                st.rerun()
+
+# 2. Agar report ban chuki hai, toh report dikhao (Back button sabse upar rahega)
+else:
+    # Sabse upar Back button taaki aapko scroll na karna pade
+    if st.button("⬅️ Go Back & Edit Details", use_container_width=True):
+        st.session_state["report"] = None
+        st.rerun()
+
+    st.divider()
+
+    report = st.session_state["report"]
+
+    st.success("Your Career Report Is Ready!")
+    st.header("Hello, " + report["name"] + "!")
+
+    st.subheader("Your Selected Details")
+    st.write("**Subject:**", report["subject"])
+    st.write("**Interest:**", report["interest"])
+
+    st.divider()
+
+    st.subheader("🌟 Recommended Careers")
+    for index, career in enumerate(report["result"]["careers"], 1):
+        st.write(f"{index}. **{career}**")
+
+    st.divider()
+
+    st.subheader("💡 Required Skills")
+    st.write(report["result"]["skills"])
+
+    st.divider()
+
+    st.subheader("🗺️ Your Career Roadmap")
+    for index, step in enumerate(report["result"]["roadmap"], 1):
+        st.write(f"**Step {index}:** {step}")
+
+    st.divider()
+
+    st.subheader("📄 Download Your Report")
+    pdf_data = create_pdf(
+        report["name"],
+        report["subject"],
+        report["interest"],
+        report["result"]
     )
 
-else:
-    interest = "Select Interest"
+    st.download_button(
+        label="⬇️ Download Career Report (PDF)",
+        data=pdf_data,
+        file_name="Career_Report.pdf",
+        mime="application/pdf",
+        use_container_width=True
+    )
 
 st.divider()
-
-if st.button("🔍 Find My Career", use_container_width=True):
-
-    if not name.strip():
-        st.warning("Please enter your name.")
-
-    elif subject == "Select Subject":
-        st.warning("Please select your favourite subject.")
-
-    elif interest == "Select Interest":
-        st.warning("Please select your area of interest.")
-
-    else:
-        st.session_state["report"] = {
-            "name": name.strip(),
-            "subject": subject,
-            "interest": interest,
-            "result": career_data[subject][interest]
-        }
+st.caption(
+    "AI Virtual Career Counsellor | AIML Project | "
+    "Career suggestions are based on a predefined career database."
+)
 
     
 # =====================================================
