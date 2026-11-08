@@ -1,4 +1,3 @@
-
 import streamlit as st 
 from fpdf import FPDF 
 
@@ -569,6 +568,3 @@ st.caption(
     "AI Virtual Career Counsellor | AIML Project | "
     "Career suggestions are based on a predefined career database."
 )
-
-
-
