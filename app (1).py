@@ -366,83 +366,85 @@ career_data = {
 # =====================================================
 
 def create_pdf(name, subject, interest, result):
+    from fpdf import FPDF
 
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_margins(15, 15, 15)
     pdf.add_page()
 
-    pdf.set_font("Arial", "B", 18)
-    pdf.cell(
-        0, 12,
-        "AI VIRTUAL CAREER COUNSELLOR",
-        new_x="LMARGIN",
-        new_y="NEXT",
-        align="C"
-    )
+    # Safe text for built-in PDF fonts
+    def safe_text(value):
+        return str(value).encode("latin-1", "replace").decode("latin-1")
 
-    pdf.ln(8)
-
-    pdf.set_font("Arial", "B", 14)
-    pdf.cell(
-        0, 10,
-        "Career Recommendation Report",
-        new_x="LMARGIN",
-        new_y="NEXT"
-    )
-
-    pdf.ln(5)
-    pdf.set_font("Arial", "", 11)
-
-    safe_name = name.encode("latin-1", "replace").decode("latin-1")
-
-    pdf.cell(0, 8, f"Student Name: {safe_name}", new_x="LMARGIN", new_y="NEXT")
-    pdf.cell(0, 8, f"Subject: {subject}", new_x="LMARGIN", new_y="NEXT")
-    pdf.multi_cell(0, 8, f"Interest: {interest}")
-
-    pdf.ln(5)
-
-    pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Recommended Careers:", new_x="LMARGIN", new_y="NEXT")
-
-    pdf.set_font("Arial", "", 11)
-
-    for career in result["careers"]:
-        pdf.cell(
-            0, 8,
-            "- " + career,
-            new_x="LMARGIN",
-            new_y="NEXT"
+    # Common text function
+    def write_text(text, height=8, bold=False, size=11):
+        pdf.set_x(pdf.l_margin)
+        pdf.set_font("Arial", "B" if bold else "", size)
+        pdf.multi_cell(
+            pdf.epw,
+            height,
+            safe_text(text)
         )
 
-    pdf.ln(3)
+    # Main heading
+    write_text("AI VIRTUAL CAREER COUNSELLOR", 12, True, 16)
+    pdf.ln(5)
 
-    pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Required Skills:", new_x="LMARGIN", new_y="NEXT")
+    # Student details
+    write_text("STUDENT DETAILS", 10, True, 13)
+    write_text(f"Name: {name}")
+    write_text(f"Subject: {subject}")
+    write_text(f"Interest: {interest}")
+    pdf.ln(4)
 
-    pdf.set_font("Arial", "", 11)
-    pdf.multi_cell(0, 8, result["skills"])
+    # Career recommendations
+    write_text("RECOMMENDED CAREERS", 10, True, 13)
 
-    pdf.ln(3)
+    careers = result.get("careers", [])
+    for index, career in enumerate(careers, 1):
+        write_text(f"{index}. {career}")
 
-    pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 9, "Career Roadmap:", new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(4)
 
-    pdf.set_font("Arial", "", 11)
+    # Required skills
+    write_text("REQUIRED SKILLS", 10, True, 13)
 
-    for index, step in enumerate(result["roadmap"], 1):
-        pdf.multi_cell(0, 8, f"{index}. {step}")
+    skills = result.get("skills", [])
+    if isinstance(skills, list):
+        for skill in skills:
+            write_text(f"- {skill}")
+    else:
+        write_text(skills)
+
+    pdf.ln(4)
+
+    # Career roadmap
+    write_text("CAREER ROADMAP", 10, True, 13)
+
+    roadmap = result.get("roadmap", [])
+    if isinstance(roadmap, list):
+        for index, step in enumerate(roadmap, 1):
+            write_text(f"{index}. {step}")
+    else:
+        write_text(roadmap)
 
     pdf.ln(5)
 
-    pdf.set_font("Arial", "I", 9)
-    pdf.multi_cell(
-        0, 7,
-        "Note: These are general career suggestions. "
-        "Choose a career after considering your interests, "
-        "education, abilities and professional guidance."
+    # Footer note
+    write_text(
+        "Note: These career suggestions are based on your selected "
+        "subject and interests. Explore each career before making "
+        "your final decision.",
+        8,
+        False,
+        10
     )
 
+    # Return PDF as bytes
     return bytes(pdf.output())
+
+
 
     
 # =====================================================
