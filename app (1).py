@@ -1,11 +1,9 @@
-import streamlit as st 
+import streamlit as st
 from fpdf import FPDF 
 
 # =====================================================
-# PROJECT: AI VIRTUAL CAREER COUNSELLOR
-# DOMAIN: ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING
+# PAGE CONFIGURATION
 # =====================================================
-
 st.set_page_config(
     page_title="AI Virtual Career Counsellor",
     page_icon="🎓",
@@ -15,16 +13,10 @@ st.set_page_config(
 # =====================================================
 # CAREER DATABASE
 # =====================================================
-
 career_data = {
-
     "Mathematics": {
         "Numbers, Statistics and Data": {
-            "careers": [
-                "Data Analyst",
-                "Statistician",
-                "Data Scientist"
-            ],
+            "careers": ["Data Analyst", "Statistician", "Data Scientist"],
             "skills": "Mathematics, Statistics, Python, Data Analysis",
             "roadmap": [
                 "Learn basic Mathematics and Statistics.",
@@ -33,13 +25,8 @@ career_data = {
                 "Build data analysis projects and create a portfolio."
             ]
         },
-
         "Finance and Money": {
-            "careers": [
-                "Financial Analyst",
-                "Accountant",
-                "Investment Analyst"
-            ],
+            "careers": ["Financial Analyst", "Accountant", "Investment Analyst"],
             "skills": "Mathematics, Accounting, Financial Analysis, Excel",
             "roadmap": [
                 "Learn basic financial concepts.",
@@ -48,13 +35,8 @@ career_data = {
                 "Practice with financial projects."
             ]
         },
-
         "Engineering and Technology": {
-            "careers": [
-                "Civil Engineer",
-                "Mechanical Engineer",
-                "Electrical Engineer"
-            ],
+            "careers": ["Civil Engineer", "Mechanical Engineer", "Electrical Engineer"],
             "skills": "Mathematics, Physics, Problem Solving, Engineering",
             "roadmap": [
                 "Build strong Mathematics and Physics knowledge.",
@@ -63,13 +45,8 @@ career_data = {
                 "Work on engineering projects."
             ]
         },
-
         "Teaching and Research": {
-            "careers": [
-                "Mathematics Teacher",
-                "Research Scientist",
-                "Mathematics Professor"
-            ],
+            "careers": ["Mathematics Teacher", "Research Scientist", "Mathematics Professor"],
             "skills": "Mathematics, Communication, Research, Problem Solving",
             "roadmap": [
                 "Develop strong mathematical knowledge.",
@@ -79,14 +56,9 @@ career_data = {
             ]
         }
     },
-
     "Computer Science": {
         "AI and Machine Learning": {
-            "careers": [
-                "AI Engineer",
-                "Machine Learning Engineer",
-                "Data Scientist"
-            ],
+            "careers": ["AI Engineer", "Machine Learning Engineer", "Data Scientist"],
             "skills": "Python, Mathematics, Machine Learning, Data Analysis",
             "roadmap": [
                 "Learn Python programming.",
@@ -95,13 +67,8 @@ career_data = {
                 "Build AI and Machine Learning projects."
             ]
         },
-
         "Software and Programming": {
-            "careers": [
-                "Software Developer",
-                "Web Developer",
-                "Application Developer"
-            ],
+            "careers": ["Software Developer", "Web Developer", "Application Developer"],
             "skills": "Python, Java, HTML, CSS, Problem Solving",
             "roadmap": [
                 "Learn a programming language.",
@@ -110,13 +77,8 @@ career_data = {
                 "Build and publish software projects."
             ]
         },
-
         "Cybersecurity and Networks": {
-            "careers": [
-                "Cybersecurity Analyst",
-                "Network Engineer",
-                "Security Consultant"
-            ],
+            "careers": ["Cybersecurity Analyst", "Network Engineer", "Security Consultant"],
             "skills": "Computer Networks, Linux, Security Concepts, Problem Solving",
             "roadmap": [
                 "Learn computer fundamentals.",
@@ -125,13 +87,8 @@ career_data = {
                 "Build security knowledge through safe projects and certifications."
             ]
         },
-
         "Hardware and Robotics": {
-            "careers": [
-                "Robotics Engineer",
-                "Embedded Systems Engineer",
-                "Hardware Engineer"
-            ],
+            "careers": ["Robotics Engineer", "Embedded Systems Engineer", "Hardware Engineer"],
             "skills": "Electronics, Programming, Robotics, Microcontrollers",
             "roadmap": [
                 "Learn basic electronics.",
@@ -141,14 +98,9 @@ career_data = {
             ]
         }
     },
-
     "Biology": {
         "Patient Care and Healthcare": {
-            "careers": [
-                "Doctor",
-                "Nurse",
-                "Physiotherapist"
-            ],
+            "careers": ["Doctor", "Nurse", "Physiotherapist"],
             "skills": "Biology, Communication, Patient Care, Medical Knowledge",
             "roadmap": [
                 "Study Biology and Human Anatomy.",
@@ -157,13 +109,8 @@ career_data = {
                 "Gain supervised practical experience."
             ]
         },
-
         "Laboratory and Research": {
-            "careers": [
-                "Microbiologist",
-                "Biochemist",
-                "Research Scientist"
-            ],
+            "careers": ["Microbiologist", "Biochemist", "Research Scientist"],
             "skills": "Biology, Chemistry, Laboratory Skills, Research",
             "roadmap": [
                 "Learn Biology and Chemistry fundamentals.",
@@ -172,13 +119,8 @@ career_data = {
                 "Participate in research projects."
             ]
         },
-
         "Medicines and Pharmacy": {
-            "careers": [
-                "Pharmacist",
-                "Clinical Research Associate",
-                "Pharmaceutical Scientist"
-            ],
+            "careers": ["Pharmacist", "Clinical Research Associate", "Pharmaceutical Scientist"],
             "skills": "Chemistry, Biology, Pharmaceutical Knowledge, Research",
             "roadmap": [
                 "Study Biology and Chemistry.",
@@ -187,13 +129,8 @@ career_data = {
                 "Gain professional training and experience."
             ]
         },
-
         "Plants and Animals": {
-            "careers": [
-                "Botanist",
-                "Zoologist",
-                "Wildlife Biologist"
-            ],
+            "careers": ["Botanist", "Zoologist", "Wildlife Biologist"],
             "skills": "Biology, Environmental Science, Observation, Research",
             "roadmap": [
                 "Learn plant and animal biology.",
@@ -202,13 +139,8 @@ career_data = {
                 "Work on biodiversity and conservation projects."
             ]
         },
-
         "Environment and Nature": {
-            "careers": [
-                "Environmental Scientist",
-                "Ecologist",
-                "Conservation Scientist"
-            ],
+            "careers": ["Environmental Scientist", "Ecologist", "Conservation Scientist"],
             "skills": "Environmental Science, Biology, Research, Data Analysis",
             "roadmap": [
                 "Learn environmental science basics.",
@@ -218,14 +150,9 @@ career_data = {
             ]
         }
     },
-
     "Arts and Design": {
         "Drawing and Visual Design": {
-            "careers": [
-                "Graphic Designer",
-                "Illustrator",
-                "UI Designer"
-            ],
+            "careers": ["Graphic Designer", "Illustrator", "UI Designer"],
             "skills": "Creativity, Drawing, Design Tools, Visual Communication",
             "roadmap": [
                 "Practice drawing and creative thinking.",
@@ -234,13 +161,8 @@ career_data = {
                 "Create a design portfolio."
             ]
         },
-
         "Writing and Communication": {
-            "careers": [
-                "Content Writer",
-                "Journalist",
-                "Copywriter"
-            ],
+            "careers": ["Content Writer", "Journalist", "Copywriter"],
             "skills": "Writing, Communication, Creativity, Research",
             "roadmap": [
                 "Improve reading and writing skills.",
@@ -249,13 +171,8 @@ career_data = {
                 "Create a writing portfolio."
             ]
         },
-
         "Film and Entertainment": {
-            "careers": [
-                "Film Director",
-                "Video Editor",
-                "Animator"
-            ],
+            "careers": ["Film Director", "Video Editor", "Animator"],
             "skills": "Creativity, Storytelling, Editing, Visual Design",
             "roadmap": [
                 "Learn storytelling and creative concepts.",
@@ -264,13 +181,8 @@ career_data = {
                 "Create short films or animation projects."
             ]
         },
-
         "Fashion and Creativity": {
-            "careers": [
-                "Fashion Designer",
-                "Fashion Illustrator",
-                "Fashion Stylist"
-            ],
+            "careers": ["Fashion Designer", "Fashion Illustrator", "Fashion Stylist"],
             "skills": "Creativity, Drawing, Design, Fashion Knowledge",
             "roadmap": [
                 "Learn fashion and design fundamentals.",
@@ -280,14 +192,9 @@ career_data = {
             ]
         }
     },
-
     "Business": {
         "Finance and Accounting": {
-            "careers": [
-                "Accountant",
-                "Financial Analyst",
-                "Auditor"
-            ],
+            "careers": ["Accountant", "Financial Analyst", "Auditor"],
             "skills": "Accounting, Mathematics, Excel, Financial Knowledge",
             "roadmap": [
                 "Learn basic accounting concepts.",
@@ -296,13 +203,8 @@ career_data = {
                 "Gain practical experience through projects."
             ]
         },
-
         "Marketing and Sales": {
-            "careers": [
-                "Marketing Manager",
-                "Digital Marketing Specialist",
-                "Sales Executive"
-            ],
+            "careers": ["Marketing Manager", "Digital Marketing Specialist", "Sales Executive"],
             "skills": "Communication, Marketing, Creativity, Market Research",
             "roadmap": [
                 "Learn marketing fundamentals.",
@@ -311,13 +213,8 @@ career_data = {
                 "Work on marketing projects."
             ]
         },
-
         "Management and Leadership": {
-            "careers": [
-                "Business Manager",
-                "Project Manager",
-                "Human Resource Manager"
-            ],
+            "careers": ["Business Manager", "Project Manager", "Human Resource Manager"],
             "skills": "Leadership, Communication, Planning, Teamwork",
             "roadmap": [
                 "Learn business management basics.",
@@ -326,13 +223,8 @@ career_data = {
                 "Develop leadership experience through projects."
             ]
         },
-
         "Starting a Business": {
-            "careers": [
-                "Entrepreneur",
-                "Startup Founder",
-                "Business Consultant"
-            ],
+            "careers": ["Entrepreneur", "Startup Founder", "Business Consultant"],
             "skills": "Business Planning, Creativity, Communication, Finance",
             "roadmap": [
                 "Learn basic business concepts.",
@@ -341,13 +233,8 @@ career_data = {
                 "Develop and test a small business idea."
             ]
         },
-
         "Economics and Analysis": {
-            "careers": [
-                "Economist",
-                "Business Analyst",
-                "Market Research Analyst"
-            ],
+            "careers": ["Economist", "Business Analyst", "Market Research Analyst"],
             "skills": "Economics, Mathematics, Statistics, Analytical Thinking",
             "roadmap": [
                 "Learn basic Economics.",
@@ -359,105 +246,72 @@ career_data = {
     }
 }
 
-
 # =====================================================
-# PDF REPORT GENERATION
+# PDF GENERATION FUNCTION
 # =====================================================
-
 def create_pdf(name, subject, interest, result):
-    from fpdf import FPDF
-
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.set_margins(15, 15, 15)
     pdf.add_page()
 
-    # Safe text for built-in PDF fonts
     def safe_text(value):
         return str(value).encode("latin-1", "replace").decode("latin-1")
 
-    # Common text function
     def write_text(text, height=8, bold=False, size=11):
         pdf.set_x(pdf.l_margin)
         pdf.set_font("Arial", "B" if bold else "", size)
-        pdf.multi_cell(
-            pdf.epw,
-            height,
-            safe_text(text)
-        )
+        pdf.multi_cell(pdf.epw, height, safe_text(text))
 
-    # Main heading
     write_text("AI VIRTUAL CAREER COUNSELLOR", 12, True, 16)
     pdf.ln(5)
 
-    # Student details
     write_text("STUDENT DETAILS", 10, True, 13)
     write_text(f"Name: {name}")
     write_text(f"Subject: {subject}")
     write_text(f"Interest: {interest}")
     pdf.ln(4)
 
-    # Career recommendations
     write_text("RECOMMENDED CAREERS", 10, True, 13)
-
-    careers = result.get("careers", [])
-    for index, career in enumerate(careers, 1):
+    for index, career in enumerate(result.get("careers", []), 1):
         write_text(f"{index}. {career}")
 
     pdf.ln(4)
 
-    # Required skills
     write_text("REQUIRED SKILLS", 10, True, 13)
-
-    skills = result.get("skills", [])
-    if isinstance(skills, list):
-        for skill in skills:
-            write_text(f"- {skill}")
-    else:
-        write_text(skills)
+    skills = result.get("skills", "")
+    write_text(skills)
 
     pdf.ln(4)
 
-    # Career roadmap
     write_text("CAREER ROADMAP", 10, True, 13)
-
-    roadmap = result.get("roadmap", [])
-    if isinstance(roadmap, list):
-        for index, step in enumerate(roadmap, 1):
-            write_text(f"{index}. {step}")
-    else:
-        write_text(roadmap)
+    for index, step in enumerate(result.get("roadmap", []), 1):
+        write_text(f"{index + 1}. {step}")
 
     pdf.ln(5)
-
-    # Footer note
     write_text(
         "Note: These career suggestions are based on your selected "
-        "subject and interests. Explore each career before making "
-        "your final decision.",
-        8,
-        False,
-        10
+        "subject and interests. Explore each career before making your final decision.",
+        8, False, 10
     )
 
-    # Return PDF as bytes
     return bytes(pdf.output())
 
-
 # =====================================================
-# STREAMLIT USER INTERFACE & FLOW LOGIC
+# SESSION STATE INITIALIZATION
 # =====================================================
-
-if "report" not in st.session_state:
+if "report" not in st.session_state or not isinstance(st.session_state["report"], dict):
     st.session_state["report"] = None
 
-# Agar report nahi bani hai, toh sirf FORM dikhao
+# =====================================================
+# UI FLOW: FORM vs REPORT SCREEN
+# =====================================================
 if st.session_state["report"] is None:
     st.title("🎓 AI Virtual Career Counsellor")
     st.write("Discover career options based on your favourite subject and personal interests.")
     st.divider()
 
-    with st.form("career_form_unique_id"):
+    with st.form("career_input_form"):
         st.subheader("Enter Your Details")
 
         name = st.text_input("Enter Your Name", placeholder="Enter your full name")
@@ -493,9 +347,8 @@ if st.session_state["report"] is None:
                 }
                 st.rerun()
 
-# Agar report ban chuki hai, toh FORM gayab ho jayega aur sirf REPORT dikhegi
 else:
-    # Sabse upar Back button
+    # Back button at the top of the report
     if st.button("⬅️ Back to Form", use_container_width=True):
         st.session_state["report"] = None
         st.rerun()
@@ -505,11 +358,11 @@ else:
     report = st.session_state["report"]
 
     st.success("Your Career Report Is Ready!")
-    st.header("Hello, " + report["name"] + "!")
+    st.header(f"Hello, {report.get('name', 'User')}!")
 
     st.subheader("Your Selected Details")
-    st.write("**Subject:**", report["subject"])
-    st.write("**Interest:**", report["interest"])
+    st.write(f"**Subject:** {report.get('subject', '')}")
+    st.write(f"**Interest:** {report.get('interest', '')}")
 
     st.divider()
 
@@ -543,76 +396,11 @@ else:
         data=pdf_data,
         file_name="Career_Report.pdf",
         mime="application/pdf",
-        key="unique_pdf_download_button", # Duplicate ID error fix karne ke liye key di hai
+        key="unique_download_btn_id",
         use_container_width=True
     )
 
 st.divider()
-st.caption(
-    "AI Virtual Career Counsellor | AIML Project | "
-    "Career suggestions are based on a predefined career database."
-)
-
-    
-# =====================================================
-# DISPLAY CAREER REPORT
-# =====================================================
-
-if "report" in st.session_state:
-
-    report = st.session_state["report"]
-
-    st.success("Your Career Report Is Ready!")
-
-    st.header("Hello, " + report["name"] + "!")
-
-    st.subheader("Your Selected Details")
-
-    st.write("**Subject:**", report["subject"])
-    st.write("**Interest:**", report["interest"])
-
-    st.divider()
-
-    st.subheader("🌟 Recommended Careers")
-
-    for index, career in enumerate(report["result"]["careers"], 1):
-        st.write(f"{index}. **{career}**")
-
-    st.divider()
-
-    st.subheader("💡 Required Skills")
-
-    st.write(report["result"]["skills"])
-
-    st.divider()
-
-    st.subheader("🗺️ Your Career Roadmap")
-
-    for index, step in enumerate(report["result"]["roadmap"], 1):
-        st.write(f"**Step {index}:** {step}")
-
-    st.divider()
-    
-
-    st.subheader("📄 Download Your Report")
-
-    pdf_data = create_pdf(
-        report["name"],
-        report["subject"],
-        report["interest"],
-        report["result"]
-    )
-
-    st.download_button(
-        label="⬇️ Download Career Report (PDF)",
-        data=pdf_data,
-        file_name="Career_Report.pdf",
-        mime="application/pdf",
-        use_container_width=True
-    )
-
-st.divider()
-
 st.caption(
     "AI Virtual Career Counsellor | AIML Project | "
     "Career suggestions are based on a predefined career database."
